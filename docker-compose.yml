@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+  redis:
+    build:
+      context: ./redis
+    ports:
+      - 6379:6379
+    restart: always
+
+  mysql:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password --sql_mode=""
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./mysql:/var/lib/mysql
+
+  php:
+    build:
+      context: ./php
+    restart: always
+    ports:
+      - "9000:9000"
+    volumes:
+      - "/home/lpraxedes/Documentos/Projetos:/var/www"
+    links:
+      - mysql
+
+  nginx:
+    build:
+      context: ./nginx
+    volumes:
+      - "/home/lpraxedes/Documentos/Projetos:/var/www"
+    ports:
+      - "8080:8080"
+    restart: always
+    links:
+      - php
