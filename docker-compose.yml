@@ -26,7 +26,7 @@ services:
     ports:
       - "9000:9000"
     volumes:
-      - "/home/Duckode/Projetos:/var/www"
+      - "/home/Duckode/Projetos:/var/www/html"
     links:
       - mysql
 
@@ -34,9 +34,9 @@ services:
     build:
       context: ./nginx
     volumes:
-      - "/home/Duckode/Projetos:/var/www"
+      - "/home/Duckode/Projetos:/var/www/html"
     ports:
-      - "8080:8080"
+      - "80:80"
     restart: always
     links:
       - php
