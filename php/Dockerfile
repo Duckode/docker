@@ -56,7 +56,6 @@ RUN useradd dev -g dev -d /home/dev -m
 USER dev
 
 ADD ./php.ini /usr/local/etc/php/conf.d/php.ini
-ADD ./php.ini /usr/local/etc/php/conf.d/php.ini
 
 EXPOSE 9000
 CMD ["php-fpm"]
