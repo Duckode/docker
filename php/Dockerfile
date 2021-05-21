@@ -1,4 +1,4 @@
-FROM php:7.4-fpm
+FROM php:8.0-fpm
 
 RUN apt-get update && apt-get upgrade -y \
 	libonig-dev \
@@ -9,7 +9,7 @@ RUN apt-get update && apt-get upgrade -y \
 
 ## Node
 RUN apt-get install -y gnupg2
-RUN rm -rf /var/lib/apt/lists/ && curl -sL https://deb.nodesource.com/setup_10.x | bash -
+RUN rm -rf /var/lib/apt/lists/ && curl -sL https://deb.nodesource.com/setup_12.x | bash -
 RUN apt-get install nodejs -y
 
 ## ZIP
@@ -39,9 +39,9 @@ RUN docker-php-ext-install mbstring
 ## XDEBUG
 RUN pecl install xdebug
 RUN docker-php-ext-enable xdebug
-RUN echo "xdebug.remote_port=9000" >> /usr/local/etc/php/conf.d/xdebug.ini
-RUN echo "xdebug.remote_enable=1" >> /usr/local/etc/php/conf.d/xdebug.ini
-RUN echo "xdebug.remote_connect_back=1" >> /usr/local/etc/php/conf.d/xdebug.ini
+RUN echo "xdebug.client_port=9000" >> /usr/local/etc/php/conf.d/xdebug.ini
+RUN echo "xdebug.mode=develop,coverage,debug,gcstats,profile,trace" >> /usr/local/etc/php/conf.d/xdebug.ini
+RUN echo "xdebug.discover_client_host=true" >> /usr/local/etc/php/conf.d/xdebug.ini
 
 ## REDIS
 RUN pecl install redis
@@ -51,11 +51,14 @@ RUN echo "memory_limit = 1024M" > /usr/local/etc/php/conf.d/memory_limit.ini
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
+RUN apt install nano
+RUN apt install wget -y
+
 RUN groupadd dev -g 999
 RUN useradd dev -g dev -d /home/dev -m
 USER dev
 
-ADD ./php.ini /usr/local/etc/php/conf.d/php.ini
+ADD php.ini /usr/local/etc/php/conf.d/php.ini
 
 EXPOSE 9000
 CMD ["php-fpm"]

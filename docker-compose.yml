@@ -26,7 +26,7 @@ services:
     ports:
       - "9000:9000"
     volumes:
-      - "/var/www/html:/var/www/html"
+      - "./www:/var/www/html"
     links:
       - mysql
 
@@ -34,7 +34,7 @@ services:
     build:
       context: ./nginx
     volumes:
-      - "/var/www/html:/var/www/html"
+      - "./www:/var/www/html"
     ports:
       - "80:80"
     restart: always
