@@ -1,5 +1,5 @@
 Docker
 
-PHP 7.4
+PHP 8.0
 MySQL 8.0
 Redis
